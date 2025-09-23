@@ -37,9 +37,6 @@ espainour/
 │ └─ .env.example
 └─ docker-compose.yml # opcional
 
-yaml
-Code kopieren
-
 ---
 
 ## ⚙️ Backend (Spring Boot)
