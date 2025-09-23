@@ -45,12 +45,12 @@ class ProyectoIntegrationTestListar {
     @Test
     void testListarSinSearch() throws Exception {
         mockMvc.perform(get("/api/proyectos")
-                        .param("page", "0")
+                        .param("page", "1")
                         .param("pageSize", "10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(3)))
-                .andExpect(jsonPath("$.meta.page").value(0))
+                .andExpect(jsonPath("$.meta.page").value(1))
                 .andExpect(jsonPath("$.meta.total").value(3));
     }
 
@@ -58,7 +58,7 @@ class ProyectoIntegrationTestListar {
     void testListarConSearchPorTitulo() throws Exception {
         mockMvc.perform(get("/api/proyectos")
                         .param("search", "Escuela")
-                        .param("page", "0")
+                        .param("page", "1")
                         .param("pageSize", "10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -70,7 +70,7 @@ class ProyectoIntegrationTestListar {
     void testListarConSearchPorTag() throws Exception {
         mockMvc.perform(get("/api/proyectos")
                         .param("search", "salud")
-                        .param("page", "0")
+                        .param("page", "1")
                         .param("pageSize", "10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

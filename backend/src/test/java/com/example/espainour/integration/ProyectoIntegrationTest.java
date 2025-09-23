@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,7 +39,6 @@ class ProyectoIntegrationTest {
 
     @Test
     void testCRUDProyecto() throws Exception {
-        // CREATE
         ProyectoDTO dto = new ProyectoDTO("Proyecto A", "Descripción A", List.of("tag1", "tag2"));
 
         String createResponse = mockMvc.perform(post("/api/proyectos")
@@ -47,6 +47,7 @@ class ProyectoIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").value("Proyecto A"))
+                .andExpect(jsonPath("$.tags", hasSize(2)))
                 .andReturn().getResponse().getContentAsString();
 
         Proyecto created = objectMapper.readValue(createResponse, Proyecto.class);
@@ -54,12 +55,11 @@ class ProyectoIntegrationTest {
 
         assertThat(proyectoRepo.findById(id)).isPresent();
 
-        // READ
         mockMvc.perform(get("/api/proyectos/" + id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Proyecto A"));
+                .andExpect(jsonPath("$.title").value("Proyecto A"))
+                .andExpect(jsonPath("$.tags", hasSize(2)));
 
-        // UPDATE
         ProyectoDTO updateDto = new ProyectoDTO("Proyecto B", "Descripción B", List.of("tagX"));
 
         mockMvc.perform(put("/api/proyectos/" + id)
@@ -68,9 +68,9 @@ class ProyectoIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Proyecto B"))
                 .andExpect(jsonPath("$.description").value("Descripción B"))
+                .andExpect(jsonPath("$.tags", hasSize(1)))
                 .andExpect(jsonPath("$.tags[0]").value("tagX"));
 
-        // DELETE
         mockMvc.perform(delete("/api/proyectos/" + id))
                 .andExpect(status().isNoContent());
 
