@@ -25,17 +25,17 @@ Objetivo: demostrar dominio básico de **frontend + backend conectados** con CRU
 espainour/
 ├─ README.md
 ├─ backend/
-│ ├─ src/main/java/com/example/espainour
-│ ├─ pom.xml
-│ └─ .env.example
+│  ├─ src/main/java/com/example/espainour
+│  ├─ pom.xml
+│  └─ .env.example
 ├─ frontend/
-│ ├─ src/
-│ │ ├─ components/
-│ │ ├─ pages/
-│ │ └─ routes/
-│ ├─ package.json
-│ └─ .env.example
-└─ docker-compose.yml # opcional
+│  ├─ src/
+│  │  ├─ components/
+│  │  ├─ pages/
+│  │  └─ routes/
+│  ├─ package.json
+│  └─ .env.example
+
 
 ---
 
