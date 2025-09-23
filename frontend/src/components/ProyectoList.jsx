@@ -26,17 +26,16 @@ export default function ProyectoList() {
   }, [search]);
 
   const fetchProyectos = async () => {
-    setError(null);
     try {
       const res = await fetch(
-        `${BASE_URL}?search=${encodeURIComponent(debouncedSearch)}&page=${page}&pageSize=${pageSize}`
+        `${BASE_URL}?search=${encodeURIComponent(
+          debouncedSearch
+        )}&page=${page + 1}&pageSize=${pageSize}`
       );
       if (!res.ok) throw new Error("Error fetching proyectos");
       const data = await res.json();
-      const items = Array.isArray(data) ? data : data.data || [];
-      const totalItems = Array.isArray(data) ? data.length : data.meta?.total || 0;
-      setProyectos(items);
-      setTotal(totalItems);
+      setProyectos(data.data || []);
+      setTotal(data.meta?.total || 0);
     } catch (err) {
       setError(err.message);
       setProyectos([]);
@@ -84,22 +83,39 @@ export default function ProyectoList() {
         onChange={(e) => setSearch(e.target.value)}
         style={{ marginBottom: "10px", padding: "5px", width: "300px" }}
       />
-      {loading && <p>Buscando proyectos...</p>}
+      {loading && <p>Buscando...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!loading && !error && proyectos.length === 0 && <p>No se encontraron proyectos.</p>}
       <ul>
         {proyectos.map((p) => (
           <li key={p.id} style={{ marginBottom: "5px" }}>
-            <Link to={`/proyectos/${p.id}`}>{p.title}</Link>
-            <Link to={`/proyectos/${p.id}/editar`} style={{ marginLeft: "10px" }}>Editar</Link>
-            <button onClick={() => deleteProyecto(p.id)} style={{ marginLeft: "10px", color: "red" }}>Borrar</button>
+            <Link to={`/proyectos/${p.id}`}>
+              {p.title} 
+            </Link>
+            <Link to={`/proyectos/${p.id}/editar`} style={{ marginLeft: "10px" }}>
+              Editar
+            </Link>
+            <button
+              onClick={() => deleteProyecto(p.id)}
+              style={{ marginLeft: "10px", color: "red" }}
+            >
+              Borrar
+            </button>
           </li>
         ))}
       </ul>
       {proyectos.length > 0 && (
         <div style={{ marginTop: "10px" }}>
-          <button disabled={page === 0} onClick={() => setPage(page - 1)}>Anterior</button>
-          <button disabled={(page + 1) * pageSize >= total} onClick={() => setPage(page + 1)} style={{ marginLeft: "5px" }}>Siguiente</button>
+          <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+            Anterior
+          </button>
+          <button
+            disabled={(page + 1) * pageSize >= total}
+            onClick={() => setPage(page + 1)}
+            style={{ marginLeft: "5px" }}
+          >
+            Siguiente
+          </button>
         </div>
       )}
       <div style={{ marginTop: "10px" }}>

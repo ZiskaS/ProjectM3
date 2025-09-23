@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,8 @@ public class ProyectoController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize) {
 
-        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        int safePage = Math.max(page - 1, 0); // Evita índices negativos
+        Pageable pageable = PageRequest.of(safePage, pageSize);
         var proyectos = proyectoService.listarProyectos(search, pageable);
 
         return Map.of(
@@ -48,7 +50,9 @@ public class ProyectoController {
         Proyecto proyecto = new Proyecto();
         proyecto.setTitle(dto.getTitle());
         proyecto.setDescription(dto.getDescription());
-        proyecto.setTags(dto.getTags() != null ? dto.getTags() : new ArrayList<>());
+        proyecto.setTags(dto.getTags() != null ? dto.getTags() : new ArrayList<>()); // Nunca null
+        proyecto.setCreatedAt(LocalDate.now());
+        proyecto.setUpdatedAt(LocalDate.now());
         Proyecto saved = proyectoService.crearProyecto(proyecto);
         return ResponseEntity.ok(saved);
     }
@@ -62,14 +66,14 @@ public class ProyectoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Proyecto> actualizar(@PathVariable Long id, @Valid @RequestBody ProyectoDTO dto) {
-        Proyecto proyecto = new Proyecto();
-        proyecto.setTitle(dto.getTitle());
-        proyecto.setDescription(dto.getDescription());
-        proyecto.setTags(dto.getTags() != null ? dto.getTags() : new ArrayList<>());
-
-        return proyectoService.actualizarProyecto(id, proyecto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return proyectoService.obtenerProyecto(id).map(existing -> {
+            existing.setTitle(dto.getTitle());
+            existing.setDescription(dto.getDescription());
+            existing.setTags(dto.getTags() != null ? dto.getTags() : new ArrayList<>()); // Nunca null
+            existing.setUpdatedAt(LocalDate.now()); // Actualiza la fecha de modificación
+            Proyecto updated = proyectoService.actualizarProyecto(id, existing).orElse(existing);
+            return ResponseEntity.ok(updated);
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -80,4 +84,3 @@ public class ProyectoController {
         return ResponseEntity.notFound().build();
     }
 }
-

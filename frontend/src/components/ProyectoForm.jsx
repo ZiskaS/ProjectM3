@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const BASE_URL = "http://localhost:8080/api/proyectos";
 
@@ -9,126 +9,103 @@ export default function ProyectoForm() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [tags, setTags] = useState([]);
-  const [newTag, setNewTag] = useState("");
+  const [tagsInput, setTagsInput] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [updatedAt, setUpdatedAt] = useState("");
-  const [loading, setLoading] = useState(!!id);
-  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!id) return;
+    setLoading(true);
     fetch(`${BASE_URL}/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTitle(data.title || "");
-        setDescription(data.description || "");
-        setTags(data.tags || []);
-        setCreatedAt(data.createdAt || "");
-        setUpdatedAt(data.updatedAt || "");
+      .then(res => {
+        if (!res.ok) throw new Error("Error al cargar proyecto");
+        return res.json();
       })
+      .then(data => {
+        setTitle(data.title);
+        setDescription(data.description || "");
+        setTagsInput((data.tags || []).join(", "));
+        setCreatedAt(data.createdAt);
+        setUpdatedAt(data.updatedAt);
+      })
+      .catch(err => setError(err.message))
       .finally(() => setLoading(false));
   }, [id]);
 
-  const addTag = () => {
-    const trimmed = newTag.trim();
-    if (trimmed && !tags.includes(trimmed)) {
-      setTags([...tags, trimmed]);
-      setNewTag("");
-    }
-  };
-
-  const removeTag = (tagToRemove) => {
-    setTags(tags.filter((t) => t !== tagToRemove));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
-    const proyecto = { title, description, tags };
-    const method = id ? "PUT" : "POST";
-    const url = id ? `${BASE_URL}/${id}` : BASE_URL;
+    setSaving(true);
+    setError(null);
+
+    const payload = {
+      title,
+      description,
+      tags: tagsInput
+        .split(",")
+        .map(t => t.trim())
+        .filter(t => t.length > 0)
+    };
 
     try {
-      const res = await fetch(url, {
-        method,
+      const res = await fetch(`${BASE_URL}${id ? `/${id}` : ""}`, {
+        method: id ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(proyecto),
+        body: JSON.stringify(payload)
       });
-
-      if (!res.ok) {
-        const data = await res.json();
-        if (res.status === 400 && data.errors) {
-          setErrors(data.errors);
-        } else {
-          throw new Error(data.message || "Error al guardar proyecto");
-        }
-        return;
-      }
-
+      if (!res.ok) throw new Error("Error al guardar proyecto");
       navigate("/proyectos");
     } catch (err) {
-      alert(err.message);
+      setError(err.message);
+    } finally {
+      setSaving(false);
     }
   };
-
-  if (loading) return <p>Cargando...</p>;
 
   return (
     <div>
-      <h2>{id ? "Editar Proyecto" : "Nuevo Proyecto"}</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Título:</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          {errors.title && <p style={{ color: "red" }}>{errors.title}</p>}
-        </div>
-
-        <div>
-          <label>Descripción:</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={5}
-          />
-        </div>
-
-        <div>
-          <label>Tags:</label>
+      <h1>{id ? "Editar Proyecto" : "Crear Proyecto"}</h1>
+      {loading && <p>Buscando proyecto...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {!loading && (
+        <form onSubmit={handleSubmit}>
           <div>
-            {tags.map((tag, i) => (
-              <span key={i} style={{ marginRight: "5px" }}>
-                {tag}{" "}
-                <button type="button" onClick={() => removeTag(tag)}>
-                  x
-                </button>
-              </span>
-            ))}
+            <label>Título:</label>
+            <input
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              required
+            />
           </div>
-          <input
-            value={newTag}
-            onChange={(e) => setNewTag(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
-            placeholder="Escribe un tag y presiona Enter"
-          />
-          <button type="button" onClick={addTag}>
-            Add Tag
+          <div>
+            <label>Descripción:</label>
+            <textarea
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Tags (separados por coma):</label>
+            <input
+              value={tagsInput}
+              onChange={e => setTagsInput(e.target.value)}
+              placeholder="ej: educación, integración"
+            />
+          </div>
+          {id && (
+            <div>
+              <p>Creado: {createdAt}</p>
+              <p>Actualizado: {updatedAt}</p>
+            </div>
+          )}
+          <button type="submit" disabled={saving}>
+            {saving ? "Guardando..." : "Guardar"}
           </button>
-        </div>
-
-        {id && (
-          <div>
-            <p>Created At: {createdAt}</p>
-            <p>Updated At: {updatedAt}</p>
-          </div>
-        )}
-
-        <button type="submit">{id ? "Guardar cambios" : "Crear proyecto"}</button>
-      </form>
+        </form>
+      )}
     </div>
   );
 }
+
