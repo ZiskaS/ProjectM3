@@ -32,7 +32,12 @@ export default function ProyectoDetail() {
   return (
     <div>
       <h1>{proyecto.title}</h1>
-      <p>{proyecto.description}</p>
+      <p>{proyecto.description || "Sin descripción"}</p>
+      <p>Tags: {proyecto.tags && proyecto.tags.length > 0 ? proyecto.tags.join(", ") : "Sin tags"}</p>
+      <p>Creado: {proyecto.createdAt}</p>
+      <p>Actualizado: {proyecto.updatedAt}</p>
+      <Link to={`/proyectos/${proyecto.id}/editar`}>Editar proyecto</Link>
+      <br />
       <Link to="/proyectos">Volver a la lista</Link>
     </div>
   );
