@@ -20,8 +20,7 @@ Objetivo: demostrar dominio básico de **frontend + backend conectados** con CRU
 
 ---
 
-## 📁 Estructura del Proyecto
-
+📁 Estructura del Proyecto
 espainour/
 ├─ README.md
 ├─ backend/
@@ -35,6 +34,7 @@ espainour/
 │  │  └─ routes/
 │  ├─ package.json
 │  └─ .env.example
+
 
 
 ---
