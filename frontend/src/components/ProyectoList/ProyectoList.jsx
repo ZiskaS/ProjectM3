@@ -49,11 +49,10 @@ export default function ProyectoList() {
       setTotal(0);
     } finally {
       setLoading(false);
-      setIsSearching(false); // dejar de mostrar "Buscando…" después de la carga
+      setIsSearching(false); 
     }
   };
 
-  // Fetch cada vez que cambia la búsqueda o la página
   useEffect(() => {
     fetchProyectos();
   }, [debouncedQuery, page]);
