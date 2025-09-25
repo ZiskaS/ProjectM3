@@ -26,23 +26,42 @@ Objetivo: demostrar dominio básico de **frontend + backend conectados** con CRU
 espainour/
 ├── README.md
 ├── backend/
-│   ├── .mvn/
-│   │   └── wrapper/
+│   ├── .mvn/wrapper
+│   ├── docs
 │   ├── src/
-│   │   └── main/
-│   │       └── java/com/example/espainour/
+│   │   └── main/java/com/example/espainour/
+│   │       ├── config/
+│   │       ├── controller/
+│   │       ├── dto/
+│   │       ├── exception/
+│   │       ├── model/
+│   │       ├── repository/
+│   │       ├── service/
+│   │       └── DemoApplication.java
+│   ├── .gitattributes
+│   ├── .gitignore
+│   ├── README.md
 │   ├── mvnw
 │   ├── mvnw.cmd
-│   ├── pom.xml
-│   ├── .gitattributes
-│   └── .gitignore
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   ├── pages/
-    │   └── routes/
-    ├── package.json
-    └── .env.example
+│   └── pom.xml
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── .gitignore
+│   ├── README.md
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   └── vite.config.js
 ```
 ---
 
