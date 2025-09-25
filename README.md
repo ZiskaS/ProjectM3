@@ -159,7 +159,6 @@ La aplicación permite ordenar y filtrar proyectos de manera avanzada:
 ```http
 GET /api/proyectos?sort=title&dir=asc&tags=educación,infraestructura&page=0&pageSize=10
 
-```bash
 {
   "data": [
     {
