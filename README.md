@@ -135,6 +135,52 @@ npm run dev
 Acceder a la app en: [http://localhost:5173](http://localhost:5173)
 
 ---
+### Ordenación y filtros avanzados
+
+La aplicación permite ordenar y filtrar proyectos de manera avanzada:
+
+#### Funcionalidades
+
+- **Ordenación**
+  - Parámetros: `sort=createdAt|title` y `dir=asc|desc`
+  - Ejemplo: `/proyectos?sort=title&dir=asc`
+
+- **Filtros por tags**
+  - Parámetro: `tags=infraestructura,educación`
+  - Múltiples tags separados por coma
+  - Muestra solo proyectos que contienen todos los tags seleccionados
+
+- **Búsqueda combinada**
+  - Combina ordenación, filtros y búsqueda:  
+    `/proyectos?sort=createdAt&dir=desc&tags=educación,infraestructura&search=Escuela`
+
+#### Ejemplo de llamada API
+
+```http
+GET /api/proyectos?sort=title&dir=asc&tags=educación,infraestructura&page=0&pageSize=10
+
+```bash
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Construcción de escuela",
+      "description": "Proyecto educativo",
+      "tags": ["educación", "infraestructura"],
+      "createdAt": "2025-09-23",
+      "updatedAt": "2025-09-23"
+    }
+  ],
+  "meta": { "page": 0, "pageSize": 10, "total": 1 }
+}
+```
+
+- **Beneficios UX**
+
+Permite encontrar proyectos relevantes rápidamente
+
+La URL refleja filtros y ordenación, facilitando compartir enlaces directos
+---
 
 ## 🧪 Tests
 
