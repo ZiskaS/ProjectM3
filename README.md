@@ -22,11 +22,28 @@ Objetivo: demostrar dominio básico de **frontend + backend conectados** con CRU
 
 ## 📁 Estructura del Proyecto
 
-
-
-
-
-
+```bash
+espainour/
+├── README.md
+├── backend/
+│   ├── .mvn/
+│   │   └── wrapper/
+│   ├── src/
+│   │   └── main/
+│   │       └── java/com/example/espainour/
+│   ├── mvnw
+│   ├── mvnw.cmd
+│   ├── pom.xml
+│   ├── .gitattributes
+│   └── .gitignore
+└── frontend/
+    ├── src/
+    │   ├── components/
+    │   ├── pages/
+    │   └── routes/
+    ├── package.json
+    └── .env.example
+```
 ---
 
 ## ⚙️ Backend (Spring Boot)
