@@ -23,7 +23,7 @@ public class DataLoader {
                                ProyectoRepository proyectoRepo) {
         return args -> {
 
-            // --- SOCIOS ---
+            // --- Socios ---
             Socio socio1 = new Socio();
             socio1.setNombre("Laura");
             socio1.setApellidos("Gómez");
@@ -50,7 +50,7 @@ public class DataLoader {
 
             socioRepo.saveAll(List.of(socio1, socio2));
 
-            // --- REFUGIADOS ---
+            // --- Refugiados ---
             Refugiado ref1 = new Refugiado();
             ref1.setNombre("Fatima");
             ref1.setApellidos("Khalil");
@@ -77,7 +77,7 @@ public class DataLoader {
 
             refugiadoRepo.saveAll(List.of(ref1, ref2));
 
-            // --- VOLUNTARIOS ---
+            // --- Voluntarios ---
             Voluntario vol1 = new Voluntario();
             vol1.setNombre("Marta");
             vol1.setApellidos("López");
@@ -107,80 +107,56 @@ public class DataLoader {
 
             voluntarioRepo.saveAll(List.of(vol1, vol2));
 
-            // --- PROYECTOS ---
+            // --- Proyectos ---
             if (proyectoRepo.count() == 0) {
                 List<Proyecto> proyectos = List.of(
                         new Proyecto("Curso de Español para Principiantes",
                                 "Clases de 10 semanas de español básico para refugiados recién llegados",
-                                List.of("educación", "integración"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("educación", "integración")),
 
                         new Proyecto("Mentoría Laboral",
                                 "Apoyo para la búsqueda de empleo y elaboración de CV",
-                                List.of("empleo", "coaching"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("empleo", "coaching")),
 
                         new Proyecto("Colecta de Ropa de Invierno",
                                 "Recolección y distribución de abrigos y ropa de invierno",
-                                List.of("donación", "ropa"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("donación", "ropa")),
 
                         new Proyecto("Taller de Cocina Comunitaria",
                                 "Preparación de platos tradicionales y encuentro intercultural",
-                                List.of("comunidad", "alimentación"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("comunidad", "alimentación")),
 
                         new Proyecto("Círculo de Mujeres Refugiadas",
                                 "Espacio seguro para mujeres refugiadas, apoyo y talleres",
-                                List.of("mujeres", "apoyo", "comunidad"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("mujeres", "apoyo", "comunidad")),
 
                         new Proyecto("Clases de Alfabetización Digital",
                                 "Enseñanza de herramientas digitales básicas y uso de internet",
-                                List.of("educación", "digital"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("educación", "digital")),
 
                         new Proyecto("Taller de Costura para Mujeres",
                                 "Capacitación en costura y manualidades, empoderamiento femenino",
-                                List.of("mujeres", "habilidades", "empleo"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("mujeres", "habilidades", "empleo")),
 
                         new Proyecto("Programa Deportivo Comunitario",
                                 "Actividades deportivas para jóvenes refugiados y familias",
-                                List.of("deporte", "integración", "familia"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("deporte", "integración", "familia")),
 
                         new Proyecto("Apoyo Psicológico y Social",
                                 "Sesiones de acompañamiento psicológico y orientación social",
-                                List.of("salud", "apoyo"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("salud", "apoyo")),
 
                         new Proyecto("Taller de Arte y Cultura",
                                 "Actividades artísticas y culturales para preservar tradiciones y fomentar la integración",
-                                List.of("cultura", "arte", "integración"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("cultura", "arte", "integración")),
 
                         new Proyecto("Clases de Cocina Halal",
                                 "Taller de cocina adaptada a la dieta halal y hábitos culturales",
-                                List.of("alimentación", "cultura", "musulmanes"),
-                                LocalDate.now(),
-                                LocalDate.now()),
+                                List.of("alimentación", "cultura", "musulmanes")),
 
                         new Proyecto("Club de Lectura para Mujeres y Niñas",
                                 "Fomento de la lectura y aprendizaje en un entorno seguro para mujeres y niñas",
-                                List.of("mujeres", "niñas", "educación"),
-                                LocalDate.now(),
-                                LocalDate.now())
+                                List.of("mujeres", "niñas", "educación"))
                 );
 
                 proyectoRepo.saveAll(proyectos);

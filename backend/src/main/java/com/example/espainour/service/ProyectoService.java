@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,10 +27,8 @@ public class ProyectoService {
     }
 
     public Proyecto crearProyecto(Proyecto proyecto) {
-        proyecto.setCreatedAt(LocalDate.now());
-        proyecto.setUpdatedAt(LocalDate.now());
         proyecto.setTags(proyecto.getTags() != null ? proyecto.getTags() : new ArrayList<>());
-        return proyectoRepo.save(proyecto);
+        return proyectoRepo.save(proyecto); // timestamps werden automatisch gesetzt
     }
 
     public Optional<Proyecto> obtenerProyecto(Long id) {
@@ -43,8 +40,7 @@ public class ProyectoService {
             p.setTitle(proyecto.getTitle());
             p.setDescription(proyecto.getDescription());
             p.setTags(proyecto.getTags() != null ? proyecto.getTags() : new ArrayList<>());
-            p.setUpdatedAt(LocalDate.now());
-            return proyectoRepo.save(p);
+            return proyectoRepo.save(p); // updatedAt wird automatisch aktualisiert
         });
     }
 

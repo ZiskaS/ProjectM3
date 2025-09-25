@@ -58,7 +58,9 @@ class ProyectoIntegrationTest {
         mockMvc.perform(get("/api/proyectos/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Proyecto A"))
-                .andExpect(jsonPath("$.tags", hasSize(2)));
+                .andExpect(jsonPath("$.tags", hasSize(2)))
+                .andExpect(jsonPath("$.createdAt").exists())
+                .andExpect(jsonPath("$.updatedAt").exists());
 
         ProyectoDTO updateDto = new ProyectoDTO("Proyecto B", "Descripción B", List.of("tagX"));
 
@@ -69,7 +71,8 @@ class ProyectoIntegrationTest {
                 .andExpect(jsonPath("$.title").value("Proyecto B"))
                 .andExpect(jsonPath("$.description").value("Descripción B"))
                 .andExpect(jsonPath("$.tags", hasSize(1)))
-                .andExpect(jsonPath("$.tags[0]").value("tagX"));
+                .andExpect(jsonPath("$.tags[0]").value("tagX"))
+                .andExpect(jsonPath("$.updatedAt").exists());
 
         mockMvc.perform(delete("/api/proyectos/" + id))
                 .andExpect(status().isNoContent());

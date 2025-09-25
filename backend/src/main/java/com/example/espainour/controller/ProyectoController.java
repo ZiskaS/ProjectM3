@@ -9,9 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -31,7 +29,7 @@ public class ProyectoController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize) {
 
-        int safePage = Math.max(page - 1, 0); // Evita índices negativos
+        int safePage = Math.max(page - 1, 0);
         Pageable pageable = PageRequest.of(safePage, pageSize);
         var proyectos = proyectoService.listarProyectos(search, pageable);
 
@@ -50,9 +48,7 @@ public class ProyectoController {
         Proyecto proyecto = new Proyecto();
         proyecto.setTitle(dto.getTitle());
         proyecto.setDescription(dto.getDescription());
-        proyecto.setTags(dto.getTags() != null ? dto.getTags() : new ArrayList<>()); // Nunca null
-        proyecto.setCreatedAt(LocalDate.now());
-        proyecto.setUpdatedAt(LocalDate.now());
+        proyecto.setTags(dto.getTags() != null ? dto.getTags() : new ArrayList<>()); // niemals null
         Proyecto saved = proyectoService.crearProyecto(proyecto);
         return ResponseEntity.ok(saved);
     }
@@ -69,8 +65,7 @@ public class ProyectoController {
         return proyectoService.obtenerProyecto(id).map(existing -> {
             existing.setTitle(dto.getTitle());
             existing.setDescription(dto.getDescription());
-            existing.setTags(dto.getTags() != null ? dto.getTags() : new ArrayList<>()); // Nunca null
-            existing.setUpdatedAt(LocalDate.now()); // Actualiza la fecha de modificación
+            existing.setTags(dto.getTags() != null ? dto.getTags() : new ArrayList<>());
             Proyecto updated = proyectoService.actualizarProyecto(id, existing).orElse(existing);
             return ResponseEntity.ok(updated);
         }).orElse(ResponseEntity.notFound().build());
