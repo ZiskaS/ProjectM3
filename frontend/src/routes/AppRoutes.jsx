@@ -1,8 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
-import Proyectos from "../pages/Proyectos";
+import ProyectoList from "../components/ProyectoList/ProyectoList";
 import ProyectoForm from "../components/ProyectoForm";
-import ProyectoList from "../components/ProyectoList";
 import ProyectoDetail from "../components/ProyectoDetail";
 
 export default function AppRoutes() {
@@ -16,5 +15,3 @@ export default function AppRoutes() {
     </Routes>
   );
 }
-
-

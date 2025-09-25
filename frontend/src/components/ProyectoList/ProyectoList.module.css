@@ -1,0 +1,51 @@
+/* ProyectoList.module.css */
+
+.wrapper {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.controls {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+input, select {
+  padding: 5px 8px;
+  font-size: 14px;
+}
+
+.grid {
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.card strong {
+  font-size: 16px;
+}
+
+.status {
+  color: #555;
+  font-style: italic;
+}
+
+.error {
+  color: red;
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 const BASE_URL = "http://localhost:8080/api/proyectos";
@@ -10,35 +10,34 @@ export default function ProyectoDetail() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProyecto = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/${id}`);
-        if (!res.ok) throw new Error("Proyecto no encontrado");
-        const data = await res.json();
-        setProyecto(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProyecto();
+    let canceled = false;
+    fetch(`${BASE_URL}/${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error("Error al cargar proyecto");
+        return res.json();
+      })
+      .then(data => { if (!canceled) setProyecto(data); })
+      .catch(err => { if (!canceled) setError(err.message); })
+      .finally(() => { if (!canceled) setLoading(false); });
+    return () => { canceled = true; };
   }, [id]);
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading) return <p>Cargando…</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
-  if (!proyecto) return <p>Proyecto no encontrado</p>;
+  if (!proyecto) return <p>No encontrado</p>;
 
   return (
     <div>
-      <h1>{proyecto.title}</h1>
-      <p>{proyecto.description || "Sin descripción"}</p>
-      <p>Tags: {proyecto.tags && proyecto.tags.length > 0 ? proyecto.tags.join(", ") : "Sin tags"}</p>
-      <p>Creado: {proyecto.createdAt}</p>
-      <p>Actualizado: {proyecto.updatedAt}</p>
-      <Link to={`/proyectos/${proyecto.id}/editar`}>Editar proyecto</Link>
-      <br />
-      <Link to="/proyectos">Volver a la lista</Link>
+      <h2>{proyecto.title}</h2>
+      <p>{proyecto.description}</p>
+      {proyecto.tags && proyecto.tags.length > 0 && (
+        <p>Tags: {proyecto.tags.join(", ")}</p>
+      )}
+      <div style={{ marginTop: "10px" }}>
+        <Link to={`/proyectos/${proyecto.id}/editar`}>Editar</Link>
+        <Link to="/proyectos" style={{ marginLeft: "10px" }}>Volver</Link>
+      </div>
     </div>
   );
 }
+
