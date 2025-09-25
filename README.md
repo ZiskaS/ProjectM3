@@ -54,7 +54,7 @@ espainour/
 
 ### Ejemplo GET `/api/proyectos?search=Escuela&page=0&pageSize=10`
 
-\`\`\`json
+```json
 {
   "data": [
     {
@@ -72,17 +72,17 @@ espainour/
     "total": 1
   }
 }
-\`\`\`
+```
 
 ### Ejemplo POST `/api/proyectos`
 
-\`\`\`json
+```json
 {
   "title": "Nuevo Proyecto",
   "description": "Descripción opcional",
   "tags": ["infraestructura", "educación"]
 }
-\`\`\`
+```
 
 ### Instrucciones Backend
 
@@ -90,15 +90,15 @@ espainour/
 2. Ejecutar migraciones si aplica  
 3. Levantar servidor:
 
-\`\`\`bash
+```bash
 ./mvnw spring-boot:run
-\`\`\`
+```
 
 4. Health check:
 
-\`\`\`bash
+```bash
 curl http://localhost:8080/api/health
-\`\`\`
+```
 
 ---
 
