@@ -176,9 +176,9 @@ GET /api/proyectos?sort=title&dir=asc&tags=educación,infraestructura&page=0&pag
 
 - **Beneficios UX**
 
-Permite encontrar proyectos relevantes rápidamente
+- Permite encontrar proyectos relevantes rápidamente
 
-La URL refleja filtros y ordenación, facilitando compartir enlaces directos
+- La URL refleja filtros y ordenación, facilitando compartir enlaces directos
 ---
 
 ## 🧪 Tests
