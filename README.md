@@ -128,6 +128,7 @@ curl http://localhost:8080/api/health
 \`\`\`bash
 cd frontend
 npm install
+npm install react-icons
 npm run dev
 \`\`\`
 
