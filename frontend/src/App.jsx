@@ -1,17 +1,17 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import Navbar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 import AppRoutes from "./routes/AppRoutes";
 import "./App.css";
 
 function App() {
   return (
     <Router>
-      <Navbar />
-      <main style={{ padding:"20px" }}>
+      <NavBar />
+      <div id="page-content">
         <AppRoutes />
-      </main>
+      </div>
     </Router>
   );
 }
-export default App;
 
+export default App;
