@@ -216,7 +216,7 @@ GET /api/proyectos?sort=title&dir=asc&tags=educación,infraestructura&page=0&pag
 
 ## 🖼️ GIF de la App
 
-![Demo Video](frontend/src/assets/video.gif)
+![Demo Video](/video.gif)
 
 ---
 
