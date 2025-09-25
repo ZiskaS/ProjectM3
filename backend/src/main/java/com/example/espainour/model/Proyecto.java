@@ -2,7 +2,7 @@ package com.example.espainour.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,22 +23,24 @@ public class Proyecto {
     @Column(name = "tag")
     private List<String> tags = new ArrayList<>();
 
-    private LocalDate createdAt = LocalDate.now();
-    private LocalDate updatedAt = LocalDate.now();
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     public Proyecto() {}
 
-    public Proyecto(Long id, String title, String description, List<String> tags, LocalDate createdAt, LocalDate updatedAt) {
+    public Proyecto(Long id, String title, String description, List<String> tags, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.tags = tags != null ? tags : new ArrayList<>();
-        this.createdAt = createdAt != null ? createdAt : LocalDate.now();
-        this.updatedAt = updatedAt != null ? updatedAt : LocalDate.now();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public Proyecto(String title, String description, List<String> tags, LocalDate createdAt, LocalDate updatedAt) {
-        this(null, title, description, tags, createdAt, updatedAt);
+    public Proyecto(String title, String description, List<String> tags) {
+        this(null, title, description, tags, null, null);
     }
 
     public Long getId() { return id; }
@@ -53,9 +55,17 @@ public class Proyecto {
     public List<String> getTags() { return tags; }
     public void setTags(List<String> tags) { this.tags = tags != null ? tags : new ArrayList<>(); }
 
-    public LocalDate getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDate createdAt) { this.createdAt = createdAt != null ? createdAt : LocalDate.now(); }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 
-    public LocalDate getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDate updatedAt) { this.updatedAt = updatedAt != null ? updatedAt : LocalDate.now(); }
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

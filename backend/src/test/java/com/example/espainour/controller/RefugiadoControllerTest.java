@@ -41,9 +41,9 @@ class RefugiadoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.nombre").value("Nombre es obligatorio"))
-                .andExpect(jsonPath("$.email").value("Email debe ser válido"))
-                .andExpect(jsonPath("$.nacionalidad").value("Nacionalidad es obligatoria"));
+                .andExpect(jsonPath("$.errors.nombre").value("Nombre es obligatorio"))
+                .andExpect(jsonPath("$.errors.email").value("Email debe ser válido"))
+                .andExpect(jsonPath("$.errors.nacionalidad").value("Nacionalidad es obligatoria"));
     }
 }
 

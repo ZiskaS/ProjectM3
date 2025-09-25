@@ -1,30 +1,52 @@
-package com.example.espainour;
+package com.example.espainour.integration;
 
-import com.example.espainour.model.Refugiado;
-import com.example.espainour.repository.RefugiadoRepository;
+import com.example.espainour.dto.RefugiadoDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-public class RefugiadoIntegrationTest {
+@AutoConfigureMockMvc
+class RefugiadoIntegrationTest{
 
     @Autowired
-    private RefugiadoRepository refugiadoRepository;
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
-    void testFindAllRefugiados() {
-        List<Refugiado> refugiados = refugiadoRepository.findAll();
+    void whenInvalidRefugiadoData_thenReturnsValidationErrors() throws Exception {
+        RefugiadoDTO invalidDto = new RefugiadoDTO();
+        invalidDto.setNombre("");
+        invalidDto.setApellidos("");
+        invalidDto.setEmail("invalid-email");
+        invalidDto.setTelefono("");
+        invalidDto.setDocumentoIdentidad("");
+        invalidDto.setNacionalidad("");
+        invalidDto.setIdioma(null);
+        invalidDto.setEstatusLegal(null);
 
-        assertThat(refugiados).isNotEmpty();
-        assertThat(refugiados.size()).isGreaterThanOrEqualTo(2);
+        String json = objectMapper.writeValueAsString(invalidDto);
 
-        boolean existsFatima = refugiados.stream()
-                .anyMatch(r -> "Fatima".equals(r.getNombre()) && "Khalil".equals(r.getApellidos()));
-        assertThat(existsFatima).isTrue();
+        mockMvc.perform(post("/api/refugiados")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.nombre").value("Nombre es obligatorio"))
+                .andExpect(jsonPath("$.errors.apellidos").value("Apellidos son obligatorios"))
+                .andExpect(jsonPath("$.errors.email").value("Email debe ser válido"))
+                .andExpect(jsonPath("$.errors.telefono").value("Teléfono es obligatorio"))
+                .andExpect(jsonPath("$.errors.documentoIdentidad").value("Documento de identidad es obligatorio"))
+                .andExpect(jsonPath("$.errors.nacionalidad").value("Nacionalidad es obligatoria"))
+                .andExpect(jsonPath("$.errors.idioma").value("Idioma es obligatorio"))
+                .andExpect(jsonPath("$.errors.estatusLegal").value("Estatus legal es obligatorio"));
     }
 }
