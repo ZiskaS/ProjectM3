@@ -125,12 +125,12 @@ curl http://localhost:8080/api/health
 
 ### Instrucciones Frontend
 
-\`\`\`bash
+```bash
 cd frontend
 npm install
 npm install react-icons
 npm run dev
-\`\`\`
+```
 
 Acceder a la app en: [http://localhost:5173](http://localhost:5173)
 
